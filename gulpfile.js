@@ -74,10 +74,6 @@ gulp.task('github-release', () => {
   };
   const done = function releaseCompleted(err, responses) {
     gutil.log('release completed');
-    gutil.log(err);
-    for (let i = 0; i < responses.length; i += 1) {
-      gutil.log(responses[i]);
-    }
   };
   conventionalGithubReleaser(auth, settings, done);
 });
