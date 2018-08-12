@@ -50,7 +50,8 @@
   "name": "@butsandcats/limelight",
   "scripts": {
     "test": "./node_modules/.bin/eslint limelight.js",
-    "test-gulp": "./node_modules/.bin/eslint gulpfile.js"
+    "test-gulp": "./node_modules/.bin/eslint gulpfile.js",
+    "release": "gulp release"
   },
-  "version": "2.1.7"
+  "version": "2.1.8"
 }
