@@ -322,4 +322,4 @@ Limelight.prototype.detach = function moveTheElementToTheEndOfTheBody() {
   return this;
 };
 
-export {Limelight};
+export default Limelight;
