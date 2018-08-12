@@ -1,0 +1,35 @@
+{
+  "author": {
+    "name": "George Butter",
+    "email" : "me@georgebutter.com",
+    "url" : "http://georgebutter.com/"
+  },
+  "license": "ISC",
+  "browser": "limelight.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ButsAndCats/limelight"
+  },
+  "description": "Front end visibility manager for popups, modals notifications, drawers, accordions and tabs",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.13.0"
+  },
+  "keywords": [
+    "Visibility",
+    "Popup",
+    "Drawer",
+    "Modal",
+    "Lightbox",
+    "Notification",
+    "Accordion",
+    "Tabs"
+  ],
+  "license": "ISC",
+  "name": "@butsandcats/limelight",
+  "scripts": {
+    "test": "eslint limelight.js"
+  },
+  "version": "2.1.7"
+}
