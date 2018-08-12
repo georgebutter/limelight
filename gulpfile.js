@@ -66,7 +66,7 @@ gulp.task('github-release', () => {
   gutil.log(gutil.colors.blue('[github]'), `Pushing to github using authtoken: ${process.env.GITHUB_AUTH_KEY}`);
   const auth = {
     type: 'oauth',
-    url: 'https://api.github.com',
+    url: 'https://api.github.com/',
     token: process.env.GITHUB_AUTH_KEY,
   };
   const settings = {
