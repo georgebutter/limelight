@@ -300,7 +300,7 @@ Limelight.prototype.hide = function hideTheElement () {
     this.visible = false
     // Fire the success callback
     if (this.settings.hideCallback && typeof this.settings.hideCallback === 'function') {
-      this.settings.hideCallback(this)
+      this.settings.hideCallback(this, Limelight.elements)
     }
   } else if (this.settings.error && typeof this.settings.error === 'function') {
     this.settings.error('Limelight: Error this element is already hidden', this)
