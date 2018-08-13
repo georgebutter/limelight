@@ -32,7 +32,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
     bodyClass: 'active-popup',
     triggerClass: null,
     detach: null,
-    innerSelector: '.popup-inner',
+    outerSelector: '.popup-inner',
     autoFocusSelector: '[data-auto-focus]',
     slide: null,
     slideSpeed: 100,
