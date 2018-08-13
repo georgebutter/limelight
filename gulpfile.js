@@ -22,7 +22,7 @@ const git = require('gulp-git'); // Run git functions with gulp
 
 // Define the location of our build directory
 const destination = 'dist/';
-const source = 'src/focus.js';
+const source = 'src/limelight.js';
 
 let type = 'patch';
 let version = null;

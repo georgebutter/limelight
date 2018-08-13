@@ -1,3 +1,23 @@
+## [2.1.12](https://github.com/ButsAndCats/limelight/compare/2.1.11...2.1.12) (2018-08-13)
+
+
+### :arrow_up:
+
+* Upgrading gulp due to Regex DoS vulnerability ([1e4fb80](https://github.com/ButsAndCats/limelight/commit/1e4fb80))
+
+### :sparkles:
+
+* Add before show callback ([3dfd52b](https://github.com/ButsAndCats/limelight/commit/3dfd52b))
+* Add elements to callback ([7d665c6](https://github.com/ButsAndCats/limelight/commit/7d665c6))
+* Add elements to callback ([a39faf3](https://github.com/ButsAndCats/limelight/commit/a39faf3))
+* Add groups to configuration ([e7d5d8b](https://github.com/ButsAndCats/limelight/commit/e7d5d8b))
+
+### :zap:
+
+* Improved slide down/up animations ([4d1cb7b](https://github.com/ButsAndCats/limelight/commit/4d1cb7b))
+
+
+
 ## [2.1.11](https://github.com/ButsAndCats/limelight/compare/2.1.10...2.1.11) (2018-08-12)
 
 
