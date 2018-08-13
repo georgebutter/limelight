@@ -71,6 +71,8 @@ const Limelight = function LimelightVisibilityManager (target, config) {
   this.detach = this.detach.bind(this)
   this.slideDown = this.slideDown.bind(this)
   this.slideUp = this.slideUp.bind(this)
+  this.buildEventListeners = this.buildEventListeners.bind(this)
+  this.eventHandler = this.eventHandler.bind(this)
 
   // If detach is set to true move the popup to the end of the popup
   if (this.settings.detach) {
@@ -79,10 +81,11 @@ const Limelight = function LimelightVisibilityManager (target, config) {
 
   // Create a list of all of the currently active elements so that we can access them globally
   Limelight.elements[target] = this
+  this.buildEventListeners()
 }
 
 // Create an empty object to store all of the elements in.
-Limelight.elements = {}
+Limelight.elements = Limelight.elements || {}
 
 // Prevent default if the element is a link and return the selector of the popup element
 Limelight.getTarget = function getTheLimelightElementRelatedToTheTarget (event) {
@@ -99,13 +102,16 @@ Limelight.getTarget = function getTheLimelightElementRelatedToTheTarget (event) 
   If the element does not exist then it is being fired directly from a data attribute.
   Therefore we create a new Limelight element. Then we toggle the elements visibility.
 */
-Limelight.eventHandler = function hideOrShowTheElement (event, target, method) {
+Limelight.prototype.eventHandler = function hideOrShowTheElement (event, target, method) {
   let element = Limelight.elements[target]
   if (!element) {
     element = new Limelight(target)
   }
   if (method === 'hide') {
     return element.hide()
+  }
+  if (method === 'show') {
+    return element.show()
   }
   return element.toggle()
 }
@@ -134,8 +140,8 @@ Limelight.escEvent = function onKeyUpEscape (event) {
 /*
   Build the event listeners
 */
-Limelight.buildEventListeners = function bindLimelightEventListeners () {
-  const allTriggers = document.querySelectorAll('[data-trigger]')
+Limelight.prototype.buildEventListeners = function bindLimelightEventListeners () {
+  const allTriggers = document.querySelectorAll(`[data-trigger][data-target="${this.target}"]`)
   for (let trigger = 0; trigger < allTriggers.length; trigger += 1) {
     const { target } = allTriggers[trigger].dataset
     allTriggers[trigger].addEventListener('click', (event) => {
