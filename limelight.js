@@ -177,14 +177,14 @@ Limelight.removeClass = function removeAClassFromAGivenElement (element, classNa
 Limelight.prototype.show = function showTheElement () {
   // Check if the element is visible or not.
   if (!this.visible || !this.element.classList.contains(this.settings.visibleClass)) {
-    // Fire the success callback
+    // Fire the before show callback
     if (this.settings.beforeShowCallback && typeof this.settings.beforeShowCallback === 'function') {
       this.settings.beforeShowCallback(this, Limelight.elements)
     }
     // Add the class to the trigger button if one is defined.
     if (this.settings.triggerClass) {
       const triggerElement = document.querySelector(`[data-target="${this.target}"]`)
-      Limelight.addClass(triggerElement, this.settings.visibleClass)
+      Limelight.addClass(triggerElement, this.settings.triggerClass)
     }
     // If slide is set to true slide the element down.
     if (this.settings.slide) {
@@ -284,16 +284,25 @@ Limelight.prototype.slideUp = function slideUp () {
 
 Limelight.prototype.hide = function hideTheElement () {
   if (this.visible || this.element.classList.contains(this.settings.visibleClass)) {
+    // Fire the before hide callback
+    if (this.settings.beforeHideCallback && typeof this.settings.beforeHideCallback === 'function') {
+      this.settings.beforeHideCallback(this, Limelight.elements)
+    }
+
+    this.visible = false
+
+    Limelight.removeClass(document.body, this.settings.bodyClass)
+
     Limelight.removeClass(this.element, this.settings.visibleClass)
 
-    if (this.settings.triggerClass) {
-      const triggerElement = document.querySelector(`[data-target="${this.target}"]`)
-      Limelight.removeClass(triggerElement, this.settings.visibleClass)
-    }
     if (this.settings.slide) {
       this.slideUp(this.settings.slideDuration)
     }
-    Limelight.removeClass(document.body, this.settings.bodyClass)
+
+    if (this.settings.triggerClass) {
+      const triggerElement = document.querySelector(`[data-target="${this.target}"]`)
+      Limelight.removeClass(triggerElement, this.settings.triggerClass)
+    }
 
     if (this.closeElement) {
       // When someone clicks the [data-close] button then we should close the modal
@@ -304,7 +313,6 @@ Limelight.prototype.hide = function hideTheElement () {
       this.innerElement.removeEventListener('click', Limelight.closeEvent)
     }
 
-    this.visible = false
     // Fire the success callback
     if (this.settings.hideCallback && typeof this.settings.hideCallback === 'function') {
       this.settings.hideCallback(this, Limelight.elements)
