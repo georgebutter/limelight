@@ -40,7 +40,8 @@ const Limelight = function LimelightVisibilityManager (target, config) {
     beforeShowCallback: null,
     showCallback: null,
     hideCallback: null,
-    error: null
+    error: null,
+    group: null
   }
 
   // Merge configs
