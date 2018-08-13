@@ -247,8 +247,9 @@ Limelight.prototype.slideDown = function slideDown () {
 
   const adder = this.settings.slideSpeed
   // Iteratively increase the height
-  this.counter += adder
+
   this.downInterval = setInterval(() => {
+    this.counter += adder
     if (this.counter < this.maxHeight) {
       el.style.maxHeight = `${this.counter}px`
     } else {
