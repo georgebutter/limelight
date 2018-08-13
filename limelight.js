@@ -35,7 +35,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
     innerSelector: '.popup-inner',
     autoFocusSelector: '[data-auto-focus]',
     slide: null,
-    slideDuration: 'fast',
+    slideSpeed: 100,
     visible: false,
     beforeShowCallback: null,
     showCallback: null,
@@ -220,6 +220,7 @@ Limelight.prototype.show = function showTheElement () {
 }
 
 Limelight.prototype.slideDown = function slideDown () {
+  clearInterval(this.upInterval)
   const el = this.element
   // Display none
   const defaultDisplay = this.element.style.display
@@ -237,29 +238,30 @@ Limelight.prototype.slideDown = function slideDown () {
   el.style.overflow = 'hidden'
   el.style.display = 'block'
 
-  const adder = this.maxHeight / 100
+  const adder = this.settings.slideSpeed
   // Iteratively increase the height
-  this.interval = setInterval(() => {
-    this.counter += adder
+  this.counter += adder
+  this.downInterval = setInterval(() => {
     if (this.counter < this.maxHeight) {
       el.style.maxHeight = `${this.counter}px`
     } else {
       el.style.maxHeight = null
       el.style.overflow = null
       this.height = this.element.offsetHeight
-      clearInterval(this.interval)
+      clearInterval(this.downInterval)
     }
-  }, this.settings.slideSpeed / 100)
+  }, 1)
 }
 
 Limelight.prototype.slideUp = function slideUp () {
+  clearInterval(this.downInterval)
   const el = this.element
-  const subtractor = this.maxHeight / 100
+  const subtractor = this.settings.slideSpeed
   // To hide the content of the element
   el.style.overflow = 'hidden'
 
   // Decreasing the height
-  this.interval = setInterval(() => {
+  this.upInterval = setInterval(() => {
     this.counter -= subtractor
     if (this.counter > 0) {
       el.style.maxHeight = `${this.counter}px`
@@ -267,10 +269,9 @@ Limelight.prototype.slideUp = function slideUp () {
       el.style.maxHeight = null
       el.style.display = 'none'
       el.style.overflow = null
-
-      clearInterval(this.interval)
+      clearInterval(this.upInterval)
     }
-  }, this.settings.slideSpeed / 100)
+  }, 1)
 }
 
 Limelight.prototype.hide = function hideTheElement () {
