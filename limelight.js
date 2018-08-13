@@ -37,6 +37,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
     slide: null,
     slideDuration: 'fast',
     visible: false,
+    beforeShowCallback: null,
     showCallback: null,
     hideCallback: null,
     error: null
@@ -169,6 +170,10 @@ Limelight.removeClass = function removeAClassFromAGivenElement (element, classNa
 Limelight.prototype.show = function showTheElement () {
   // Check if the element is visible or not.
   if (!this.visible || !this.element.classList.contains(this.settings.visibleClass)) {
+    // Fire the success callback
+    if (this.settings.beforeShowCallback && typeof this.settings.beforeShowCallback === 'function') {
+      this.settings.beforeShowCallback(this, Limelight.elements)
+    }
     // Add the class to the trigger button if one is defined.
     if (this.settings.triggerClass) {
       const triggerElement = document.querySelector(`[data-target="${this.target}"]`)
