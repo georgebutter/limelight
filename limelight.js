@@ -142,12 +142,21 @@ Limelight.escEvent = function onKeyUpEscape (event) {
 */
 Limelight.prototype.buildEventListeners = function bindLimelightEventListeners () {
   const allTriggers = document.querySelectorAll(`[data-trigger][data-target="${this.target}"]`)
+  const clickFunction = function (event) {
+    event.preventDefault()
+    const { target } = event.target.dataset
+    this.eventHandler(event, target)
+  }.bind(this)
+  const hoverFunction = function (event) {
+    event.preventDefault()
+    const { target } = event.target.dataset
+    this.eventHandler(event, target, 'show')
+  }.bind(this)
   for (let trigger = 0; trigger < allTriggers.length; trigger += 1) {
-    const { target } = allTriggers[trigger].dataset
-    allTriggers[trigger].addEventListener('click', (event) => {
-      event.preventDefault()
-      Limelight.eventHandler(event, target)
-    })
+    allTriggers[trigger].addEventListener('click', clickFunction)
+    if(this.settings.hover) {
+      allTriggers[trigger].addEventListener('mouseenter', hoverFunction)
+    }
   }
 }
 
