@@ -38,6 +38,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
     slideSpeed: 100,
     visible: false,
     beforeShowCallback: null,
+    beforeHideCallback: null,
     showCallback: null,
     hideCallback: null,
     error: null,
