@@ -211,7 +211,7 @@ Limelight.prototype.show = function showTheElement () {
 
     // Fire the success callback
     if (this.settings.showCallback && typeof this.settings.showCallback === 'function') {
-      this.settings.showCallback(this)
+      this.settings.showCallback(this, Limelight.elements)
     }
   } else if (this.settings.error && typeof this.settings.error === 'function') {
     this.settings.error('Limelight: Error this element is already visible', this)
