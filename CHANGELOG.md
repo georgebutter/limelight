@@ -1,3 +1,34 @@
+## [2.1.13](https://github.com/ButsAndCats/limelight/compare/2.1.12...2.1.13) (2018-08-13)
+
+
+### :bug:
+
+* Adder nested correctly ([19d1050](https://github.com/ButsAndCats/limelight/commit/19d1050))
+
+### :memo:
+
+* Add sample env ([0d895ab](https://github.com/ButsAndCats/limelight/commit/0d895ab))
+
+### :recycle:
+
+* Re order the hide and show functions ([a9c1590](https://github.com/ButsAndCats/limelight/commit/a9c1590))
+* Rename innerSelector setting because it didn't make sense ([280714a](https://github.com/ButsAndCats/limelight/commit/280714a))
+
+### :rotating_light:
+
+* Add space after if ([981adbc](https://github.com/ButsAndCats/limelight/commit/981adbc))
+
+### :sparkles:
+
+* Add before hide callback ([e905873](https://github.com/ButsAndCats/limelight/commit/e905873))
+* Add hover event listener ([1fa85ce](https://github.com/ButsAndCats/limelight/commit/1fa85ce))
+
+### :zap:
+
+* Make event listener build function part of prototype ([4e5430d](https://github.com/ButsAndCats/limelight/commit/4e5430d))
+
+
+
 ## [2.1.12](https://github.com/ButsAndCats/limelight/compare/2.1.11...2.1.12) (2018-08-13)
 
 
