@@ -155,7 +155,7 @@ Limelight.prototype.buildEventListeners = function bindLimelightEventListeners (
   }.bind(this)
   for (let trigger = 0; trigger < allTriggers.length; trigger += 1) {
     allTriggers[trigger].addEventListener('click', clickFunction)
-    if(this.settings.hover) {
+    if (this.settings.hover) {
       allTriggers[trigger].addEventListener('mouseenter', hoverFunction)
     }
   }
