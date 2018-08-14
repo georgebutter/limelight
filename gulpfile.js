@@ -22,7 +22,7 @@ const git = require('gulp-git'); // Run git functions with gulp
 
 // Define the location of our build directory
 const destination = 'dist/';
-const source = 'src/limelight.js';
+const source = 'limelight.js';
 
 let type = 'patch';
 let version = null;
@@ -120,7 +120,7 @@ gulp.task('lint', () => gulp.src(source)
 gulp.task('license', () => {
   gulp.src(`./${source}`)
     .pipe(bump())
-    .pipe(gulp.dest('./src/'));
+    .pipe(gulp.dest('./'));
 });
 
 gulp.task('release', (callback) => {
