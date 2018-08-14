@@ -35,7 +35,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
     outerSelector: '.popup-inner',
     autoFocusSelector: '[data-auto-focus]',
     slide: null,
-    slideSpeed: 100,
+    slideSpeed: 10,
     visible: false,
     beforeShowCallback: null,
     beforeHideCallback: null,
@@ -51,6 +51,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
   // Update current popup config
   this.visible = this.settings.visible
   // The Dom element of the popup
+
   this.element = document.querySelector(target)
   this.innerElement = document.querySelector(`${target} ${this.settings.innerSelector}`)
   this.closeElement = document.querySelector(`${target} [data-close]`)
@@ -90,7 +91,7 @@ Limelight.elements = Limelight.elements || {}
 
 // Prevent default if the element is a link and return the selector of the popup element
 Limelight.getTarget = function getTheLimelightElementRelatedToTheTarget (event) {
-  const element = event.target
+  const element = event.currentTarget
   if (element.tagName === 'A') {
     event.preventDefault()
   }
@@ -145,12 +146,12 @@ Limelight.prototype.buildEventListeners = function bindLimelightEventListeners (
   const allTriggers = document.querySelectorAll(`[data-trigger][data-target="${this.target}"]`)
   const clickFunction = function (event) {
     event.preventDefault()
-    const { target } = event.target.dataset
+    const { target } = event.currentTarget.dataset
     this.eventHandler(event, target)
   }.bind(this)
   const hoverFunction = function (event) {
     event.preventDefault()
-    const { target } = event.target.dataset
+    const { target } = event.currentTarget.dataset
     this.eventHandler(event, target, 'show')
   }.bind(this)
   for (let trigger = 0; trigger < allTriggers.length; trigger += 1) {
