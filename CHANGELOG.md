@@ -1,3 +1,12 @@
+## [2.1.14](https://github.com/ButsAndCats/limelight/compare/2.1.13...2.1.14) (2018-08-14)
+
+
+### :zap:
+
+* Replace event target with current target ([33eacdf](https://github.com/ButsAndCats/limelight/commit/33eacdf))
+
+
+
 ## [2.1.13](https://github.com/ButsAndCats/limelight/compare/2.1.12...2.1.13) (2018-08-13)
 
 
