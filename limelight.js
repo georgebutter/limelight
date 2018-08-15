@@ -130,7 +130,7 @@ Limelight.prototype.eventHandler = function hideOrShowTheElement (event, target,
 Limelight.closeEvent = function handleAnElementBeingClosed (event) {
   const target = Limelight.getTarget(event)
   if (target) {
-    Limelight.eventHandler(event, target, 'hide')
+    this.eventHandler(event, target, 'hide')
   } else {
     this.hide()
   }
@@ -326,11 +326,11 @@ Limelight.prototype.hide = function hideTheElement () {
 
     if (this.closeElement) {
       // When someone clicks the [data-close] button then we should close the modal
-      this.closeElement.removeEventListener('click', Limelight.closeEvent)
+      this.closeElement.removeEventListener('click', Limelight.closeEvent.bind(this))
     }
     if (this.outerElement) {
       // When someone clicks on the inner class hide the popup
-      this.outerElement.removeEventListener('click', Limelight.closeEvent)
+      this.outerElement.removeEventListener('click', Limelight.closeEvent.bind(this))
     }
 
     // Fire the success callback
