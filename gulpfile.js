@@ -132,7 +132,7 @@ gulp.task('release', (callback) => {
     ({ type } = args)
   }
   runSequence(
-    'lint',
+    // 'lint',
     'bump-version',
     'license',
     'changelog',
