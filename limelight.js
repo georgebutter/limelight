@@ -19,7 +19,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
     bodyClass: The class that will be applied to the body.
     triggerClass: The class that will be applied to the trigger that is clicked on.
     detach: if the body should be appended to the body.
-    innerSelector: The outer area of the element, acts like a close button when clicked.
+    outerSelector: The outer area of the element, acts like a close button when clicked.
     autoFocusSelector: An input field that you would like to be focused with the element opens.
     slide: Whether the opening should be animated with javascript, useful for accordions.
     slideDuration: Speed of the animation, can be defined in ms.
@@ -53,7 +53,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
   // The Dom element of the popup
 
   this.element = document.querySelector(target)
-  this.innerElement = document.querySelector(`${target} ${this.settings.innerSelector}`)
+  this.outerElement = document.querySelector(`${this.settings.outerSelector}`)
   this.closeElement = document.querySelector(`${target} [data-close]`)
   this.target = target
 
@@ -219,9 +219,9 @@ Limelight.prototype.show = function showTheElement () {
       // When someone clicks the [data-close] button then we should close the modal
       this.closeElement.addEventListener('click', Limelight.closeEvent.bind(this))
     }
-    if (this.innerElement) {
+    if (this.outerElement) {
       // When someone clicks on the inner class hide the popup
-      this.innerElement.addEventListener('click', Limelight.closeEvent.bind(this))
+      this.outerElement.addEventListener('click', Limelight.closeEvent.bind(this))
     }
     // When someone presses esc hide the popup and unbind the event listener
     this.element.addEventListener('keyup', Limelight.escEvent.bind(this))
@@ -319,9 +319,9 @@ Limelight.prototype.hide = function hideTheElement () {
       // When someone clicks the [data-close] button then we should close the modal
       this.closeElement.removeEventListener('click', Limelight.closeEvent)
     }
-    if (this.innerElement) {
+    if (this.outerElement) {
       // When someone clicks on the inner class hide the popup
-      this.innerElement.removeEventListener('click', Limelight.closeEvent)
+      this.outerElement.removeEventListener('click', Limelight.closeEvent)
     }
 
     // Fire the success callback
