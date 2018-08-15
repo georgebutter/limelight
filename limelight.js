@@ -146,11 +146,13 @@ Limelight.prototype.buildEventListeners = function bindLimelightEventListeners (
   const allTriggers = document.querySelectorAll(`[data-trigger][data-target="${this.target}"]`)
   const clickFunction = function (event) {
     event.preventDefault()
+    event.stopPropagation()
     const { target } = event.currentTarget.dataset
     this.eventHandler(event, target)
   }.bind(this)
   const hoverFunction = function (event) {
     event.preventDefault()
+    event.stopPropagation()
     const { target } = event.currentTarget.dataset
     this.eventHandler(event, target, 'show')
   }.bind(this)
