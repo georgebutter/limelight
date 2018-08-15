@@ -1,3 +1,18 @@
+## [2.1.15](https://github.com/ButsAndCats/limelight/compare/2.1.14...2.1.15) (2018-08-15)
+
+
+### :tropical_drink:
+
+* :rotating_light: Remove gulp linter warnings ([f1ae544](https://github.com/ButsAndCats/limelight/commit/f1ae544))
+* Fix version bumping ([6cce23e](https://github.com/ButsAndCats/limelight/commit/6cce23e))
+
+### :zap:
+
+* Change inner element to outer ([0a12885](https://github.com/ButsAndCats/limelight/commit/0a12885))
+* Stop event propogation ([15474eb](https://github.com/ButsAndCats/limelight/commit/15474eb))
+
+
+
 ## [2.1.14](https://github.com/ButsAndCats/limelight/compare/2.1.13...2.1.14) (2018-08-14)
 
 
