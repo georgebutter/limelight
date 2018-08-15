@@ -22,7 +22,8 @@ const Limelight = function LimelightVisibilityManager (target, config) {
     outerSelector: The outer area of the element, acts like a close button when clicked.
     autoFocusSelector: An input field that you would like to be focused with the element opens.
     slide: Whether the opening should be animated with javascript, useful for accordions.
-    slideDuration: Speed of the animation, can be defined in ms.
+    slideSpeed: Speed of the animation, can be defined in px per ms.
+    slideChild: Selector of the child element to slide instead of the parent.
     visible: Whether the element was loaded visible or not.
     success: Callback for when an element is success fully made visible.
     error: Callback fro when an element could not be made visible.
@@ -36,6 +37,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
     autoFocusSelector: '[data-auto-focus]',
     slide: null,
     slideSpeed: 10,
+    slideChild: null,
     visible: false,
     beforeShowCallback: null,
     beforeHideCallback: null,
@@ -58,11 +60,16 @@ const Limelight = function LimelightVisibilityManager (target, config) {
   this.target = target
 
   if (this.settings.slide) {
-    const defaultDisplay = this.element.style.display
-    this.element.style.display = 'block'
-    this.maxHeight = this.element.offsetHeight
-    this.element.style.display = defaultDisplay
-    this.height = this.element.offsetHeight
+    if(this.settings.slideChild) {
+      this.slideElement = this.element.querySelector(this.settings.slideChild)
+    } else {
+      this.slideElement = this.element
+    }
+    const defaultDisplay = this.slideElement.style.display
+    this.slideElement.style.display = 'block'
+    this.maxHeight = this.slideElement.offsetHeight
+    this.slideElement.style.display = defaultDisplay
+    this.height = this.slideElement.offsetHeight
     this.counter = this.height
   }
 
@@ -241,9 +248,9 @@ Limelight.prototype.show = function showTheElement () {
 
 Limelight.prototype.slideDown = function slideDown () {
   clearInterval(this.upInterval)
-  const el = this.element
+  const el = this.slideElement
   // Display none
-  const defaultDisplay = this.element.style.display
+  const defaultDisplay = this.slideElement.style.display
 
   el.style.display = 'block'
   el.style.overflow = 'visible'
@@ -268,7 +275,7 @@ Limelight.prototype.slideDown = function slideDown () {
     } else {
       el.style.maxHeight = null
       el.style.overflow = null
-      this.height = this.element.offsetHeight
+      this.height = this.slideElement.offsetHeight
       clearInterval(this.downInterval)
     }
   }, 1)
@@ -276,7 +283,7 @@ Limelight.prototype.slideDown = function slideDown () {
 
 Limelight.prototype.slideUp = function slideUp () {
   clearInterval(this.downInterval)
-  const el = this.element
+  const el = this.slideElement
   const subtractor = this.settings.slideSpeed
   // To hide the content of the element
   el.style.overflow = 'hidden'
