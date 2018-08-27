@@ -33,7 +33,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
     bodyClass: 'active-popup',
     triggerClass: null,
     detach: null,
-    outerSelector: '.popup-inner',
+    outerSelector: '.popup-outer',
     autoFocusSelector: '[data-auto-focus]',
     slide: null,
     slideSpeed: 10,
@@ -55,7 +55,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
   // The Dom element of the popup
 
   this.element = document.querySelector(target)
-  this.outerElement = document.querySelector(`${this.settings.outerSelector}`)
+  this.outerElement = this.element.querySelector(`${this.settings.outerSelector}`)
   this.closeElement = document.querySelector(`${target} [data-close]`)
   this.target = target
 
