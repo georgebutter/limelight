@@ -60,7 +60,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
   this.target = target
 
   if (this.settings.slide) {
-    if(this.settings.slideChild) {
+    if (this.settings.slideChild) {
       this.slideElement = this.element.querySelector(this.settings.slideChild)
     } else {
       this.slideElement = this.element
