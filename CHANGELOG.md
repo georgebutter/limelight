@@ -1,3 +1,17 @@
+## [2.1.17](https://github.com/ButsAndCats/limelight/compare/2.1.16...2.1.17) (2018-08-27)
+
+
+### :sparkles:
+
+* Add slide child ([16cb84d](https://github.com/ButsAndCats/limelight/commit/16cb84d))
+
+### :zap:
+
+* bind this into close event ([e66f1d9](https://github.com/ButsAndCats/limelight/commit/e66f1d9))
+* Changed outer element terminology ([7495d4d](https://github.com/ButsAndCats/limelight/commit/7495d4d))
+
+
+
 ## [2.1.16](https://github.com/ButsAndCats/limelight/compare/2.1.14...2.1.16) (2018-08-15)
 
 
