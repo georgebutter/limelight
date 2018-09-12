@@ -59,7 +59,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
     return
   }
   this.outerElement = this.element.querySelector(`${this.settings.outerSelector}`)
-  this.closeElement = document.querySelector(`${target} [data-close]`)
+  this.closeElements = this.element.querySelectorAll(`[data-close]`)
   this.target = target
 
   if (this.settings.slide) {
@@ -229,9 +229,11 @@ Limelight.prototype.show = function showTheElement () {
         focusEl.focus()
       }, 300)
     }
-    if (this.closeElement) {
+    if (this.closeElements) {
       // When someone clicks the [data-close] button then we should close the modal
-      this.closeElement.addEventListener('click', Limelight.closeEvent.bind(this))
+      for (let elem = 0; elem < this.closeElements.length; elem += 1) {
+        this.closeElements[elem].addEventListener('click', Limelight.closeEvent.bind(this))
+      }
     }
     if (this.outerElement) {
       // When someone clicks on the inner class hide the popup
@@ -329,9 +331,11 @@ Limelight.prototype.hide = function hideTheElement () {
       Limelight.removeClass(triggerElement, this.settings.triggerClass)
     }
 
-    if (this.closeElement) {
+    if (this.closeElements) {
       // When someone clicks the [data-close] button then we should close the modal
-      this.closeElement.removeEventListener('click', Limelight.closeEvent.bind(this))
+      for (let elem = 0; elem < this.closeElements.length; elem += 1) {
+        this.closeElements[elem].addEventListener('click', Limelight.closeEvent.bind(this))
+      }
     }
     if (this.outerElement) {
       // When someone clicks on the inner class hide the popup
