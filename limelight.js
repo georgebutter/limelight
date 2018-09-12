@@ -55,6 +55,9 @@ const Limelight = function LimelightVisibilityManager (target, config) {
   // The Dom element of the popup
 
   this.element = document.querySelector(target)
+  if (!this.element) {
+    return
+  }
   this.outerElement = this.element.querySelector(`${this.settings.outerSelector}`)
   this.closeElement = document.querySelector(`${target} [data-close]`)
   this.target = target
