@@ -53,5 +53,5 @@
     "test-gulp": "./node_modules/.bin/eslint gulpfile.js",
     "release": "gulp release"
   },
-  "version": "2.1.17"
+  "version": "2.1.18"
 }
