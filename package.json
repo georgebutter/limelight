@@ -1,15 +1,9 @@
 {
   "author": {
-    "name": "George Butter",
-    "email": "me@georgebutter.com",
-    "url": "http://georgebutter.com/"
+    "name": "DotDev"
   },
   "license": "ISC",
   "browser": "limelight.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ButsAndCats/limelight"
-  },
   "description": "Front end visibility manager for popups, modals notifications, drawers, accordions and tabs",
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -47,7 +41,7 @@
     "Accordion",
     "Tabs"
   ],
-  "name": "@butsandcats/limelight",
+  "name": "@dotdev/limelight",
   "scripts": {
     "test": "./node_modules/.bin/eslint limelight.js",
     "test-gulp": "./node_modules/.bin/eslint gulpfile.js",
