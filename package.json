@@ -3,10 +3,13 @@
     "name": "DotDev"
   },
   "license": "ISC",
-  "browser": "limelight.js",
+  "browser": "lib/limelight.js",
   "description": "Front end visibility manager for popups, modals notifications, drawers, accordions and tabs",
   "devDependencies": {
-    "babel-core": "^6.26.3",
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "babel-loader": "^8.0.4",
     "babel-preset-env": "^1.7.0",
     "conventional-github-releaser": "^3.1.2",
     "eslint": "^4.19.1",
@@ -45,6 +48,7 @@
   "scripts": {
     "test": "./node_modules/.bin/eslint limelight.js",
     "test-gulp": "./node_modules/.bin/eslint gulpfile.js",
+    "build": "./node_modules/.bin/babel limelight.js -d lib",
     "release": "gulp release"
   },
   "version": "2.1.19"
