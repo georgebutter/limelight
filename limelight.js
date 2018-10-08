@@ -93,6 +93,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
 
   // Create a list of all of the currently active elements so that we can access them globally
   Limelight.elements[target] = this
+  window.Limelight = Limelight || {};
   window.Limelight.elements[target] = this
   this.buildEventListeners()
 }
