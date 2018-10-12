@@ -30,7 +30,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
   */
   const defaultSettings = {
     visibleClass: 'visible',
-    bodyClass: 'active-popup',
+    bodyClass: null,
     triggerClass: null,
     detach: null,
     outerSelector: '.popup-outer',
@@ -162,6 +162,7 @@ Limelight.prototype.buildEventListeners = function bindLimelightEventListeners (
     this.triggerElement = event.currentTarget
     const { target } = this.triggerElement.dataset
     this.eventHandler(event, target)
+
   }.bind(this)
   const hoverFunction = function (event) {
     event.preventDefault()
@@ -219,7 +220,10 @@ Limelight.prototype.show = function showTheElement () {
     // Add the visible class to the popup
     Limelight.addClass(this.element, this.settings.visibleClass)
     // Add the body class to the body
-    Limelight.addClass(document.body, this.settings.bodyClass)
+    if (this.settings.bodyClass) {
+      Limelight.addClass(document.body, this.settings.bodyClass)
+    }
+
     // Define that this element is visible
     this.visible = true
 
@@ -257,7 +261,7 @@ Limelight.prototype.show = function showTheElement () {
 Limelight.prototype.slideDown = function slideDown () {
   const el = this.slideElement
   const height = `${el.scrollHeight}px`
-  el.style.height = height
+  el.style.height = height;
 }
 
 Limelight.prototype.slideUp = function slideUp () {
@@ -273,8 +277,9 @@ Limelight.prototype.hide = function hideTheElement () {
     }
 
     this.visible = false
-
-    Limelight.removeClass(document.body, this.settings.bodyClass)
+    if (this.settings.bodyClass) {
+      Limelight.removeClass(document.body, this.settings.bodyClass)
+    }
 
     Limelight.removeClass(this.element, this.settings.visibleClass)
 
