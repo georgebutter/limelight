@@ -1,3 +1,12 @@
+## [2.1.22](https://github.com/ButsAndCats/limelight/compare/v2.1.21...v2.1.22) (2018-10-12)
+
+
+### :zap:
+
+* Massively improve sliding :expressionless: ([14b248d](https://github.com/ButsAndCats/limelight/commit/14b248d))
+
+
+
 ## [2.1.17](https://github.com/ButsAndCats/limelight/compare/2.1.16...2.1.17) (2018-08-27)
 
 

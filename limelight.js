@@ -1,7 +1,7 @@
 /* ===================================================================================== @preserve =
 
 Limelight
-version v2.1.17
+version v2.1.18
 Author: George Butter
 https://github.com/ButsAndCats/limelight
 ISC License
@@ -93,7 +93,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
 
   // Create a list of all of the currently active elements so that we can access them globally
   Limelight.elements[target] = this
-  window.Limelight = Limelight || {};
+  window.Limelight = Limelight || {}
   window.Limelight.elements[target] = this
   this.buildEventListeners()
 }
@@ -162,7 +162,6 @@ Limelight.prototype.buildEventListeners = function bindLimelightEventListeners (
     this.triggerElement = event.currentTarget
     const { target } = this.triggerElement.dataset
     this.eventHandler(event, target)
-
   }.bind(this)
   const hoverFunction = function (event) {
     event.preventDefault()
@@ -258,14 +257,13 @@ Limelight.prototype.show = function showTheElement () {
 Limelight.prototype.slideDown = function slideDown () {
   const el = this.slideElement
   const height = `${el.scrollHeight}px`
-  el.style.height = height;
+  el.style.height = height
 }
 
 Limelight.prototype.slideUp = function slideUp () {
   const el = this.slideElement
   el.style.height = null
 }
-
 
 Limelight.prototype.hide = function hideTheElement () {
   if (this.visible || this.element.classList.contains(this.settings.visibleClass)) {
