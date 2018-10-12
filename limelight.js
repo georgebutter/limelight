@@ -256,60 +256,16 @@ Limelight.prototype.show = function showTheElement () {
 }
 
 Limelight.prototype.slideDown = function slideDown () {
-  clearInterval(this.upInterval)
   const el = this.slideElement
-  // Display none
-  const defaultDisplay = this.slideElement.style.display
-
-  el.style.display = 'block'
-  el.style.overflow = 'visible'
-  el.style.maxHeight = '100%'
-  // Declare the value of "height" variable
-  this.maxHeight = el.offsetHeight
-  el.style.display = defaultDisplay
-  this.height = el.offsetHeight
-  // Declare the value of "counter" variable
-  this.counter = this.height
-  el.style.maxHeight = `${this.height}px`
-  el.style.overflow = 'hidden'
-  el.style.display = 'block'
-
-  const adder = this.settings.slideSpeed
-  // Iteratively increase the height
-
-  this.downInterval = setInterval(() => {
-    this.counter += adder
-    if (this.counter < this.maxHeight) {
-      el.style.maxHeight = `${this.counter}px`
-    } else {
-      el.style.maxHeight = null
-      el.style.overflow = null
-      this.height = this.slideElement.offsetHeight
-      clearInterval(this.downInterval)
-    }
-  }, 1)
+  const height = `${el.scrollHeight}px`
+  el.style.height = height;
 }
 
 Limelight.prototype.slideUp = function slideUp () {
-  clearInterval(this.downInterval)
   const el = this.slideElement
-  const subtractor = this.settings.slideSpeed
-  // To hide the content of the element
-  el.style.overflow = 'hidden'
-
-  // Decreasing the height
-  this.upInterval = setInterval(() => {
-    this.counter -= subtractor
-    if (this.counter > 0) {
-      el.style.maxHeight = `${this.counter}px`
-    } else {
-      el.style.maxHeight = null
-      el.style.display = 'none'
-      el.style.overflow = null
-      clearInterval(this.upInterval)
-    }
-  }, 1)
+  el.style.height = null
 }
+
 
 Limelight.prototype.hide = function hideTheElement () {
   if (this.visible || this.element.classList.contains(this.settings.visibleClass)) {
