@@ -162,7 +162,6 @@ Limelight.prototype.buildEventListeners = function bindLimelightEventListeners (
     this.triggerElement = event.currentTarget
     const { target } = this.triggerElement.dataset
     this.eventHandler(event, target)
-
   }.bind(this)
   const hoverFunction = function (event) {
     event.preventDefault()
@@ -261,7 +260,7 @@ Limelight.prototype.show = function showTheElement () {
 Limelight.prototype.slideDown = function slideDown () {
   const el = this.slideElement
   const height = `${el.scrollHeight}px`
-  el.style.height = height;
+  el.style.height = height
 }
 
 Limelight.prototype.slideUp = function slideUp () {
