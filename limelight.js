@@ -1,7 +1,7 @@
 /* ===================================================================================== @preserve =
 
 Limelight
-version v2.1.19
+version v2.1.20
 Author: George Butter
 https://github.com/ButsAndCats/limelight
 ISC License
