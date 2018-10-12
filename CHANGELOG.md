@@ -1,3 +1,12 @@
+## [2.1.23](https://github.com/ButsAndCats/limelight/compare/2.1.22...2.1.23) (2018-10-12)
+
+
+### :sparkles:
+
+* Make body class null by default ([285ecf4](https://github.com/ButsAndCats/limelight/commit/285ecf4))
+
+
+
 ## [2.1.22](https://github.com/ButsAndCats/limelight/compare/v2.1.21...v2.1.22) (2018-10-12)
 
 
