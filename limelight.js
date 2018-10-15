@@ -10,7 +10,7 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 /* ===================================================================================== @preserve =
 
 Limelight
-version v2.1.21
+version v2.1.22
 Author: George Butter
 https://github.com/ButsAndCats/limelight
 ISC License
@@ -301,13 +301,23 @@ Limelight.prototype.show = function showTheElement() {
 
 Limelight.prototype.slideDown = function slideDown() {
   var el = this.slideElement;
-  var height = "".concat(el.scrollHeight, "px");
-  el.style.height = height;
+
+  if (this.settings.visible) {
+    el.style.height = null;
+  } else {
+    var height = "".concat(el.scrollHeight, "px");
+    el.style.height = height;
+  }
 };
 
 Limelight.prototype.slideUp = function slideUp() {
   var el = this.slideElement;
-  el.style.height = null;
+
+  if (this.settings.visible) {
+    el.style.height = 0;
+  } else {
+    el.style.height = null;
+  }
 };
 
 Limelight.prototype.hide = function hideTheElement() {

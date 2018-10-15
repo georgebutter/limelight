@@ -1,3 +1,8 @@
+## [2.1.27](https://github.com/ButsAndCats/limelight/compare/2.1.26...2.1.27) (2018-10-15)
+
+
+
+
 ## [2.1.26](https://github.com/ButsAndCats/limelight/compare/2.1.25...2.1.26) (2018-10-15)
 
 
