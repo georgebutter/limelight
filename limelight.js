@@ -1,7 +1,7 @@
 /* ===================================================================================== @preserve =
 
 Limelight
-version v2.1.20
+version v2.1.21
 Author: George Butter
 https://github.com/ButsAndCats/limelight
 ISC License
@@ -173,6 +173,13 @@ Limelight.prototype.buildEventListeners = function bindLimelightEventListeners (
     allTriggers[trigger].addEventListener('click', clickFunction)
     if (this.settings.hover) {
       allTriggers[trigger].addEventListener('mouseenter', hoverFunction)
+    }
+  }
+  // If the element is intialized visible then create an event listener for closing
+  if (this.closeElements && this.settings.visible) {
+    // When someone clicks the [data-close] button then we should close the modal
+    for (var elem = 0; elem < this.closeElements.length; elem += 1) {
+      this.closeElements[elem].addEventListener('click', Limelight.closeEvent.bind(this))
     }
   }
 }
