@@ -34,20 +34,20 @@ let version = null
 
 // The default task, run it using `gulp`
 // Converts source to ES5 and creates a minified version and builds to dist
-gulp.task('build', () => gulp.src(source)
-// First convert it to ecma2015
-  .pipe(babel({
-    presets: ['env']
-  }))
-// Add a non minified version to the dist
-// .pipe(gulp.dest(destination))
-  .pipe(minify())
-// If there is an error during minification this will pretty print to the console
-  .on('error', (err) => { gutil.log(gutil.colors.red('[Error]'), err.toString()) })
-// Then we can adjust the extension include min
-// .pipe(rename({ extname: '.min.js' }))
-// Then we output to the destination
-  .pipe(gulp.dest(destination)))
+// gulp.task('build', () => gulp.src(source)
+// // First convert it to ecma2015
+//   .pipe(babel({
+//     presets: ['env']
+//   }))
+// // Add a non minified version to the dist
+// // .pipe(gulp.dest(destination))
+//   .pipe(minify())
+// // If there is an error during minification this will pretty print to the console
+//   .on('error', (err) => { gutil.log(gutil.colors.red('[Error]'), err.toString()) })
+// // Then we can adjust the extension include min
+// // .pipe(rename({ extname: '.min.js' }))
+// // Then we output to the destination
+//   .pipe(gulp.dest(destination)))
 
 // Add the new version to the changelog
 gulp.task('changelog', () => gulp.src('CHANGELOG.md', {

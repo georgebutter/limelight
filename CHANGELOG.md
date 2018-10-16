@@ -1,3 +1,20 @@
+## [2.1.28](https://github.com/ButsAndCats/limelight/compare/2.1.27...2.1.28) (2018-10-16)
+
+
+### :package:
+
+* Rebuild ([f821015](https://github.com/ButsAndCats/limelight/commit/f821015))
+
+### :rotating_light:
+
+* Fixing errors ([90b9714](https://github.com/ButsAndCats/limelight/commit/90b9714))
+
+### :zap:
+
+* :sparkles: Convert back to ES6 toggle class on multiple triggers ([cce49ae](https://github.com/ButsAndCats/limelight/commit/cce49ae))
+
+
+
 ## [2.1.27](https://github.com/ButsAndCats/limelight/compare/2.1.26...2.1.27) (2018-10-15)
 
 
