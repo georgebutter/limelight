@@ -1,16 +1,7 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
 /* ===================================================================================== @preserve =
 
 Limelight
-version v2.1.22
+version v2.1.27
 Author: George Butter
 https://github.com/ButsAndCats/limelight
 ISC License
@@ -19,8 +10,8 @@ ISC License
 /*
   Manages visibility for popups, drawers, modals, notifications, tabs, accordions and anything else.
 */
-var Limelight = function LimelightVisibilityManager(target, config) {
-  var settings = config || {}; // The default configuration
+const Limelight = function LimelightVisibilityManager(target, config) {
+  const settings = config || {}; // The default configuration
 
   /*
     visibleClass: The class that will be applied to the target element.
@@ -37,7 +28,7 @@ var Limelight = function LimelightVisibilityManager(target, config) {
     error: Callback fro when an element could not be made visible.
   */
 
-  var defaultSettings = {
+  const defaultSettings = {
     visibleClass: 'visible',
     bodyClass: null,
     triggerClass: null,
@@ -56,7 +47,7 @@ var Limelight = function LimelightVisibilityManager(target, config) {
     group: null // Merge configs
 
   };
-  this.settings = _extends(defaultSettings, settings); // Update current popup config
+  this.settings = Object.assign(defaultSettings, settings); // Update current popup config
 
   this.visible = this.settings.visible; // The Dom element of the popup
 
@@ -66,8 +57,8 @@ var Limelight = function LimelightVisibilityManager(target, config) {
     return;
   }
 
-  this.outerElement = this.element.querySelector("".concat(this.settings.outerSelector));
-  this.closeElements = this.element.querySelectorAll("[data-close]");
+  this.outerElement = this.element.querySelector(this.settings.outerSelector);
+  this.closeElements = this.element.querySelectorAll('[data-close]');
   this.target = target;
 
   if (this.settings.slide) {
@@ -77,7 +68,7 @@ var Limelight = function LimelightVisibilityManager(target, config) {
       this.slideElement = this.element;
     }
 
-    var defaultDisplay = this.slideElement.style.display;
+    const defaultDisplay = this.slideElement.style.display;
     this.slideElement.style.display = 'block';
     this.maxHeight = this.slideElement.offsetHeight;
     this.slideElement.style.display = defaultDisplay;
@@ -110,14 +101,14 @@ var Limelight = function LimelightVisibilityManager(target, config) {
 Limelight.elements = Limelight.elements || {}; // Prevent default if the element is a link and return the selector of the popup element
 
 Limelight.getTarget = function getTheLimelightElementRelatedToTheTarget(event) {
-  var element = event.currentTarget;
+  const element = event.currentTarget;
 
   if (element.tagName === 'A') {
     event.preventDefault();
   }
 
-  var selector = element.dataset.target;
-  var target = selector || null;
+  const selector = element.dataset.target;
+  const target = selector || null;
   return target;
 };
 /*
@@ -127,7 +118,7 @@ Limelight.getTarget = function getTheLimelightElementRelatedToTheTarget(event) {
 
 
 Limelight.prototype.eventHandler = function hideOrShowTheElement(event, target, method) {
-  var element = Limelight.elements[target];
+  const element = Limelight.elements[target];
 
   if (!element) {
     element = new Limelight(target);
@@ -149,7 +140,7 @@ Limelight.prototype.eventHandler = function hideOrShowTheElement(event, target, 
 
 
 Limelight.closeEvent = function handleAnElementBeingClosed(event) {
-  var target = Limelight.getTarget(event);
+  const target = Limelight.getTarget(event);
 
   if (target) {
     this.eventHandler(event, target, 'hide');
@@ -174,24 +165,24 @@ Limelight.escEvent = function onKeyUpEscape(event) {
 
 
 Limelight.prototype.buildEventListeners = function bindLimelightEventListeners() {
-  var allTriggers = document.querySelectorAll("[data-trigger][data-target=\"".concat(this.target, "\"]"));
+  const allTriggers = document.querySelectorAll(`[data-trigger][data-target="${this.target}"]`));
 
-  var clickFunction = function (event) {
+  const clickFunction = function (event) {
     event.preventDefault();
     event.stopPropagation();
     this.triggerElement = event.currentTarget;
-    var target = this.triggerElement.dataset.target;
+    const target = this.triggerElement.dataset.target;
     this.eventHandler(event, target);
   }.bind(this);
 
-  var hoverFunction = function (event) {
+  const hoverFunction = function (event) {
     event.preventDefault();
     event.stopPropagation();
-    var target = event.currentTarget.dataset.target;
+    const target = event.currentTarget.dataset.target;
     this.eventHandler(event, target, 'show');
   }.bind(this);
 
-  for (var trigger = 0; trigger < allTriggers.length; trigger += 1) {
+  for (let trigger = 0; trigger < allTriggers.length; trigger += 1) {
     allTriggers[trigger].addEventListener('click', clickFunction);
 
     if (this.settings.hover) {
@@ -202,7 +193,7 @@ Limelight.prototype.buildEventListeners = function bindLimelightEventListeners()
 
   if (this.closeElements && this.settings.visible) {
     // When someone clicks the [data-close] button then we should close the modal
-    for (var elem = 0; elem < this.closeElements.length; elem += 1) {
+    for (let elem = 0; elem < this.closeElements.length; elem += 1) {
       this.closeElements[elem].addEventListener('click', Limelight.closeEvent.bind(this));
     }
   }
@@ -213,7 +204,7 @@ Limelight.prototype.buildEventListeners = function bindLimelightEventListeners()
 
 
 Limelight.addClass = function addAClassToAGivenElement(element, className) {
-  var el = element;
+  const el = element;
 
   if (el.classList) {
     el.classList.add(className);
@@ -225,7 +216,7 @@ Limelight.addClass = function addAClassToAGivenElement(element, className) {
 
 
 Limelight.removeClass = function removeAClassFromAGivenElement(element, className) {
-  var el = element;
+  const el = element;
 
   if (el.classList) {
     el.classList.remove(className);
@@ -246,8 +237,11 @@ Limelight.prototype.show = function showTheElement() {
 
 
     if (this.settings.triggerClass) {
-      var triggerElement = document.querySelector("[data-target=\"".concat(this.target, "\"]"));
-      Limelight.addClass(triggerElement, this.settings.triggerClass);
+      const triggerElements = document.querySelectorAll(`[data-trigger][data-target="${this.target}"]`);
+      for (let elem = 0; elem < triggerElements.length; elem += 1) {
+        const element = triggerElements[elem]
+        Limelight.addClass(element, this.settings.triggerClass);
+      }
     } // If slide is set to true slide the element down.
 
 
@@ -262,10 +256,8 @@ Limelight.prototype.show = function showTheElement() {
       Limelight.addClass(document.body, this.settings.bodyClass);
     } // Define that this element is visible
 
-
     this.visible = true; // Focus on an input field once the modal has opened
-
-    var focusEl = document.querySelector("".concat(this.target, " ").concat(this.settings.autoFocusSelector));
+    const focusEl = document.querySelector(`${this.target} ${this.settings.autoFocusSelector}`);
 
     if (focusEl) {
       setTimeout(function () {
@@ -275,7 +267,7 @@ Limelight.prototype.show = function showTheElement() {
 
     if (this.closeElements) {
       // When someone clicks the [data-close] button then we should close the modal
-      for (var elem = 0; elem < this.closeElements.length; elem += 1) {
+      for (let elem = 0; elem < this.closeElements.length; elem += 1) {
         this.closeElements[elem].addEventListener('click', Limelight.closeEvent.bind(this));
       }
     }
@@ -300,18 +292,18 @@ Limelight.prototype.show = function showTheElement() {
 };
 
 Limelight.prototype.slideDown = function slideDown() {
-  var el = this.slideElement;
+  const el = this.slideElement;
 
   if (this.settings.visible) {
     el.style.height = null;
   } else {
-    var height = "".concat(el.scrollHeight, "px");
+    const height = `${el.scrollHeight}px`
     el.style.height = height;
   }
 };
 
 Limelight.prototype.slideUp = function slideUp() {
-  var el = this.slideElement;
+  const el = this.slideElement;
 
   if (this.settings.visible) {
     el.style.height = 0;
@@ -340,13 +332,16 @@ Limelight.prototype.hide = function hideTheElement() {
     }
 
     if (this.settings.triggerClass) {
-      var triggerElement = document.querySelector("[data-target=\"".concat(this.target, "\"]"));
-      Limelight.removeClass(triggerElement, this.settings.triggerClass);
-    }
+      const triggerElements = document.querySelectorAll(`[data-trigger][data-target="${this.target}"]`);
+      for (let elem = 0; elem < triggerElements.length; elem += 1) {
+        const element = triggerElements[elem]
+        Limelight.removeClass(element, this.settings.triggerClass);
+      }
+    } // If slide is set to true slide the element down.
 
     if (this.closeElements) {
       // When someone clicks the [data-close] button then we should close the modal
-      for (var elem = 0; elem < this.closeElements.length; elem += 1) {
+      for (let elem = 0; elem < this.closeElements.length; elem += 1) {
         this.closeElements[elem].addEventListener('click', Limelight.closeEvent.bind(this));
       }
     }
@@ -390,5 +385,4 @@ Limelight.prototype.detach = function moveTheElementToTheEndOfTheBody() {
   return this;
 };
 
-var _default = Limelight;
-exports.default = _default;
+export default Limelight
