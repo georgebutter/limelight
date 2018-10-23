@@ -136,10 +136,10 @@ gulp.task('release', (callback) => {
     'bump-version',
     'license',
     'changelog',
-    'commit-changes',
-    'push-changes',
+    // 'commit-changes',
+    // 'push-changes',
     'create-new-tag',
-    'github-release'
+    // 'github-release'
   )
   if (typeof callback === 'function') {
     callback()
