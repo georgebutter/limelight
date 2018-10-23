@@ -1,3 +1,29 @@
+## [2.1.29](https://github.com/ButsAndCats/limelight/compare/2.1.27...2.1.29) (2018-10-23)
+
+
+### :bookmark:
+
+* Create version: 2.1.28 [patch] ([177221e](https://github.com/ButsAndCats/limelight/commit/177221e))
+
+### :package:
+
+* Rebuild ([d6be010](https://github.com/ButsAndCats/limelight/commit/d6be010))
+* Rebuild ([f821015](https://github.com/ButsAndCats/limelight/commit/f821015))
+
+### :rotating_light:
+
+* Fixing errors ([90b9714](https://github.com/ButsAndCats/limelight/commit/90b9714))
+
+### :sparkles:
+
+* Add click setting for hover only popups ([1da6e01](https://github.com/ButsAndCats/limelight/commit/1da6e01))
+
+### :zap:
+
+* :sparkles: Convert back to ES6 toggle class on multiple triggers ([cce49ae](https://github.com/ButsAndCats/limelight/commit/cce49ae))
+
+
+
 ## [2.1.28](https://github.com/ButsAndCats/limelight/compare/2.1.27...2.1.28) (2018-10-16)
 
 
