@@ -36,6 +36,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
     outerSelector: '.popup-outer',
     autoFocusSelector: '[data-auto-focus]',
     slide: null,
+    click: true,
     slideSpeed: 10,
     slideChild: null,
     visible: false,
@@ -176,8 +177,10 @@ Limelight.prototype.buildEventListeners = function bindLimelightEventListeners (
   }.bind(this)
 
   for (let trigger = 0; trigger < allTriggers.length; trigger += 1) {
-    allTriggers[trigger].addEventListener('click', clickFunction)
-
+    if (this.settings.click) {
+      allTriggers[trigger].addEventListener('click', clickFunction)
+    }
+    
     if (this.settings.hover) {
       allTriggers[trigger].addEventListener('mouseenter', hoverFunction)
     }
