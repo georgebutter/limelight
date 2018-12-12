@@ -137,7 +137,8 @@ Limelight.prototype.eventHandler = function hideOrShowTheElement (event, target,
 
 Limelight.closeEvent = function handleAnElementBeingClosed (event) {
   const target = Limelight.getTarget(event)
-
+  // Check if the close trigger has a data-target if it does close the target
+  // If it doesn't close this element
   if (target) {
     this.eventHandler(event, target, 'hide')
   } else {
