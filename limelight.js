@@ -55,7 +55,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
   this.element = document.querySelector(target)
 
   if (!this.element) {
-    return
+    return console.error(`${target} target not found!`)
   }
 
   this.outerElement = this.element.querySelector(this.settings.outerSelector)
