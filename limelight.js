@@ -45,13 +45,14 @@ const Limelight = function LimelightVisibilityManager (target, config) {
     showCallback: null,
     hideCallback: null,
     error: null,
-    group: null // Merge configs
-
+    group: null 
   }
+  // Merge configs
   this.settings = Object.assign(defaultSettings, settings) // Update current popup config
 
-  this.visible = this.settings.visible // The Dom element of the popup
-
+  this.visible = this.settings.visible 
+  
+  // The Dom element of the popup
   this.element = document.querySelector(target)
 
   if (!this.element) {
@@ -75,8 +76,9 @@ const Limelight = function LimelightVisibilityManager (target, config) {
     this.slideElement.style.display = defaultDisplay
     this.height = this.slideElement.offsetHeight
     this.counter = this.height
-  } // Bind this into all of our prototype functions
-
+  } 
+  
+  // Bind this into all of our prototype functions
   this.show = this.show.bind(this)
   this.hide = this.hide.bind(this)
   this.toggle = this.toggle.bind(this)
