@@ -49,6 +49,7 @@
   "name": "@dotdev/limelight",
   "scripts": {
     "test": "./node_modules/.bin/eslint limelight.js",
+    "fix": "./node_modules/.bin/eslint limelight.js --fix",
     "test-gulp": "./node_modules/.bin/eslint gulpfile.js",
     "build": "./node_modules/.bin/babel limelight.js -d lib",
     "release": "gulp release"

@@ -45,13 +45,13 @@ const Limelight = function LimelightVisibilityManager (target, config) {
     showCallback: null,
     hideCallback: null,
     error: null,
-    group: null 
+    group: null
   }
   // Merge configs
   this.settings = Object.assign(defaultSettings, settings) // Update current popup config
 
-  this.visible = this.settings.visible 
-  
+  this.visible = this.settings.visible
+
   // The Dom element of the popup
   this.element = document.querySelector(target)
 
@@ -76,8 +76,8 @@ const Limelight = function LimelightVisibilityManager (target, config) {
     this.slideElement.style.display = defaultDisplay
     this.height = this.slideElement.offsetHeight
     this.counter = this.height
-  } 
-  
+  }
+
   // Bind this into all of our prototype functions
   this.show = this.show.bind(this)
   this.hide = this.hide.bind(this)
@@ -162,27 +162,25 @@ Limelight.escEvent = function onKeyUpEscape (event) {
 */
 
 Limelight.prototype.buildEventListeners = function bindLimelightEventListeners () {
-  function on(eventName, selector, fn) {
-    document.addEventListener(eventName, function (event) {
-      var possibleTargets = document.querySelectorAll(selector);
-      var target = event.target;
+  function on (eventName, selector, fn) {
+    document.body.addEventListener(eventName, function (event) {
+      const possibleTargets = document.body.querySelectorAll(selector)
+      const target = event.target
       for (var i = 0, l = possibleTargets.length; i < l; i++) {
-        var el = target;
-        var p = possibleTargets[i];
+        let el = target
+        const p = possibleTargets[i]
 
         while (el && el !== document) {
           if (el === p) {
-            event.preventDefault();
-            event.elem = p;
-            return fn.call(p, event);
+            event.preventDefault()
+            event.elem = p
+            return fn.call(p, event)
           }
-
-          el = el.parentNode;
+          el = el.parentNode
         }
       }
-    });
+    }, true)
   }
-  
 
   const clickFunction = function (event) {
     event.preventDefault()
@@ -198,16 +196,15 @@ Limelight.prototype.buildEventListeners = function bindLimelightEventListeners (
     const target = event.elem.dataset.target
     this.eventHandler(event, target, 'show')
   }.bind(this)
-  
-  
-    if (this.settings.click) {
-      on('click', `[data-trigger][data-target="${this.target}"]`, clickFunction);
-    }
 
-    if (this.settings.hover) {
-      on('mouseenter', `[data-trigger][data-target="${this.target}"]`, hoverFunction);
-    }
-  
+  if (this.settings.click) {
+    on('click', `[data-trigger][data-target="${this.target}"]`, clickFunction)
+  }
+
+  if (this.settings.hover) {
+    on('mouseenter', `[data-trigger][data-target="${this.target}"]`, hoverFunction)
+  }
+
   // If the element is intialized visible then create an event listener for closing
   if (this.closeElements && this.settings.visible) {
     // When someone clicks the [data-close] button then we should close the modal
