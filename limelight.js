@@ -111,6 +111,7 @@ Limelight.getTarget = function getTheLimelightElementRelatedToTheTarget (event) 
   const target = selector || null
   return target
 }
+
 /*
   If the element does not exist then it is being fired directly from a data attribute.
   Therefore we create a new Limelight element. Then we toggle the elements visibility.
@@ -133,6 +134,7 @@ Limelight.prototype.eventHandler = function hideOrShowTheElement (event, target,
 
   return element.toggle()
 }
+
 /*
   When clicking on a close button or out element
 */
@@ -147,6 +149,7 @@ Limelight.closeEvent = function handleAnElementBeingClosed (event) {
     this.hide()
   }
 }
+
 /*
   On key up event check if the user has pressed escape
 */
@@ -157,16 +160,17 @@ Limelight.escEvent = function onKeyUpEscape (event) {
     this.hide()
   }
 }
+
 /*
   Build the event listeners
 */
 
 Limelight.prototype.buildEventListeners = function bindLimelightEventListeners () {
   function on (eventName, selector, fn) {
-    document.body.addEventListener(eventName, function (event) {
+    document.body.addEventListener(eventName, (event) => {
       const possibleTargets = document.body.querySelectorAll(selector)
       const target = event.target
-      for (var i = 0, l = possibleTargets.length; i < l; i++) {
+      for (let i = 0, l = possibleTargets.length; i < l; i++) {
         let el = target
         const p = possibleTargets[i]
 
@@ -205,6 +209,10 @@ Limelight.prototype.buildEventListeners = function bindLimelightEventListeners (
     on('mouseenter', `[data-trigger][data-target="${this.target}"]`, hoverFunction)
   }
 
+  if (this.settings.slide) {
+    window.addEventListener('resize', () => this.adjustSlideHeight())
+  }
+
   // If the element is intialized visible then create an event listener for closing
   if (this.closeElements && this.settings.visible) {
     // When someone clicks the [data-close] button then we should close the modal
@@ -213,6 +221,7 @@ Limelight.prototype.buildEventListeners = function bindLimelightEventListeners (
     }
   }
 }
+
 /*
   Add a class to a given element
 */
@@ -224,6 +233,7 @@ Limelight.addClass = function addAClassToAGivenElement (element, className) {
     el.classList.add(className)
   }
 }
+
 /*
   Remove a class from a given element
 */
@@ -235,6 +245,7 @@ Limelight.removeClass = function removeAClassFromAGivenElement (element, classNa
     el.classList.remove(className)
   }
 }
+
 /*
   Show the popup element
 */
@@ -269,7 +280,7 @@ Limelight.prototype.show = function showTheElement () {
     const focusEl = document.querySelector(`${this.target} ${this.settings.autoFocusSelector}`)
 
     if (focusEl) {
-      setTimeout(function () {
+      setTimeout(() => {
         focusEl.focus()
       }, 300)
     }
@@ -307,6 +318,13 @@ Limelight.prototype.slideDown = function slideDown () {
     const height = `${el.scrollHeight}px`
     el.style.height = height
   }
+}
+
+Limelight.prototype.adjustSlideHeight = function adjustSlideHeight () {
+  if (!this.visible) return
+  const el = this.slideElement
+  const height = `${el.scrollHeight}px`
+  el.style.height = height
 }
 
 Limelight.prototype.slideUp = function slideUp () {
@@ -367,6 +385,7 @@ Limelight.prototype.hide = function hideTheElement () {
 
   return this
 }
+
 /*
   Show if hidden, hide if shown.
 */
@@ -380,6 +399,7 @@ Limelight.prototype.toggle = function toggleLimelightVisibility () {
 
   return this
 }
+
 /*
   Move the element to the end of the body, sometime useful for popups.
 */
