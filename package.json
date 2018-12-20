@@ -54,5 +54,5 @@
     "build": "./node_modules/.bin/babel limelight.js -d lib",
     "release": "gulp release"
   },
-  "version": "2.2.2"
+  "version": "2.2.3"
 }
