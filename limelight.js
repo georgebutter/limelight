@@ -60,7 +60,6 @@ const Limelight = function LimelightVisibilityManager (target, config) {
   }
 
   this.outerElement = this.element.querySelector(this.settings.outerSelector)
-  this.closeElements = this.element.querySelectorAll('[data-close]')
   this.target = target
 
   if (this.settings.slide) {
@@ -101,7 +100,7 @@ const Limelight = function LimelightVisibilityManager (target, config) {
 Limelight.elements = Limelight.elements || {} // Prevent default if the element is a link and return the selector of the popup element
 
 Limelight.getTarget = function getTheLimelightElementRelatedToTheTarget (event) {
-  const element = event.currentTarget
+  const element = event.elem || event.currentTarget
 
   if (element.tagName === 'A') {
     event.preventDefault()
@@ -166,15 +165,15 @@ Limelight.escEvent = function onKeyUpEscape (event) {
 */
 
 Limelight.prototype.buildEventListeners = function bindLimelightEventListeners () {
-  function on (eventName, selector, fn) {
-    document.body.addEventListener(eventName, (event) => {
-      const possibleTargets = document.body.querySelectorAll(selector)
+  function on (top, eventName, selector, fn) {
+    top.addEventListener(eventName, (event) => {
+      const possibleTargets = top.querySelectorAll(selector)
       const target = event.target
       for (let i = 0, l = possibleTargets.length; i < l; i++) {
         let el = target
         const p = possibleTargets[i]
 
-        while (el && el !== document) {
+        while (el && el !== top) {
           if (el === p) {
             event.preventDefault()
             event.elem = p
@@ -202,23 +201,16 @@ Limelight.prototype.buildEventListeners = function bindLimelightEventListeners (
   }.bind(this)
 
   if (this.settings.click) {
-    on('click', `[data-trigger][data-target="${this.target}"]`, clickFunction)
+    on(document.body, 'click', `[data-trigger][data-target="${this.target}"]`, clickFunction)
   }
 
   if (this.settings.hover) {
-    on('mouseenter', `[data-trigger][data-target="${this.target}"]`, hoverFunction)
+    on(document.body, 'mouseenter', `[data-trigger][data-target="${this.target}"]`, hoverFunction)
   }
+  on(this.element, 'click', '[data-close]', Limelight.closeEvent.bind(this))
 
   if (this.settings.slide) {
     window.addEventListener('resize', () => this.adjustSlideHeight())
-  }
-
-  // If the element is intialized visible then create an event listener for closing
-  if (this.closeElements && this.settings.visible) {
-    // When someone clicks the [data-close] button then we should close the modal
-    for (let elem = 0; elem < this.closeElements.length; elem += 1) {
-      this.closeElements[elem].addEventListener('click', Limelight.closeEvent.bind(this))
-    }
   }
 }
 
@@ -283,13 +275,6 @@ Limelight.prototype.show = function showTheElement () {
       setTimeout(() => {
         focusEl.focus()
       }, 300)
-    }
-
-    if (this.closeElements) {
-      // When someone clicks the [data-close] button then we should close the modal
-      for (let elem = 0; elem < this.closeElements.length; elem += 1) {
-        this.closeElements[elem].addEventListener('click', Limelight.closeEvent.bind(this))
-      }
     }
 
     if (this.outerElement) {
@@ -363,13 +348,6 @@ Limelight.prototype.hide = function hideTheElement () {
         Limelight.removeClass(element, this.settings.triggerClass)
       }
     } // If slide is set to true slide the element down.
-
-    if (this.closeElements) {
-      // When someone clicks the [data-close] button then we should close the modal
-      for (let elem = 0; elem < this.closeElements.length; elem += 1) {
-        this.closeElements[elem].addEventListener('click', Limelight.closeEvent.bind(this))
-      }
-    }
 
     if (this.outerElement) {
       // When someone clicks on the inner class hide the popup
