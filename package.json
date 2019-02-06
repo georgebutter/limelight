@@ -1,6 +1,6 @@
 {
   "author": {
-    "name": "DotDev"
+    "name": "George Butter"
   },
   "license": "MIT",
   "browser": "lib/limelight.min.js",
@@ -31,7 +31,7 @@
     "Accordion",
     "Tabs"
   ],
-  "name": "@dotdev/limelight",
+  "name": "@butsandcats/limelight",
   "scripts": {
     "test": "eslint limelight.js",
     "fix": "eslint limelight.js --fix",
