@@ -1,12 +1,3 @@
-/* ===================================================================================== @preserve =
-
-Limelight
-version v2.2.4
-Author: George Butter
-https://github.com/ButsAndCats/limelight
-ISC License
-================================================================================================= */
-
 /*
   Manages visibility for popups, drawers, modals, notifications, tabs, accordions and anything else.
 */
