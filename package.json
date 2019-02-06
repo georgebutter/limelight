@@ -2,7 +2,7 @@
   "author": {
     "name": "DotDev"
   },
-  "license": "ISC",
+  "license": "MIT",
   "browser": "lib/limelight.js",
   "description": "Front end visibility manager for popups, modals notifications, drawers, accordions and tabs",
   "devDependencies": {
