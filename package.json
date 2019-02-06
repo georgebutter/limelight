@@ -3,7 +3,7 @@
     "name": "DotDev"
   },
   "license": "MIT",
-  "browser": "lib/limelight.js",
+  "browser": "lib/limelight.min.js",
   "description": "Front end visibility manager for popups, modals notifications, drawers, accordions and tabs",
   "devDependencies": {
     "@babel/cli": "^7.1.2",
@@ -13,28 +13,13 @@
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.4",
     "babel-preset-env": "^1.7.0",
-    "conventional-github-releaser": "^3.1.2",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^3.8.0",
-    "eslint-plugin-standard": "^3.1.0",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^7.0.1",
-    "gulp-babel-minify": "^0.4.3",
-    "gulp-bump": "^3.1.1",
-    "gulp-conventional-changelog": "^2.0.1",
-    "gulp-env": "^0.4.0",
-    "gulp-eslint": "^5.0.0",
-    "gulp-git": "^2.7.0",
-    "gulp-minify": "^3.1.0",
-    "gulp-rename": "^1.3.0",
-    "gulp-tap": "^1.0.1",
-    "gulp-util": "^3.0.8",
-    "run-sequence": "^2.2.1",
-    "yargs": "^12.0.1"
+    "eslint-plugin-standard": "^3.1.0"
   },
   "keywords": [
     "Visibility",
@@ -48,11 +33,14 @@
   ],
   "name": "@dotdev/limelight",
   "scripts": {
-    "test": "./node_modules/.bin/eslint limelight.js",
-    "fix": "./node_modules/.bin/eslint limelight.js --fix",
-    "test-gulp": "./node_modules/.bin/eslint gulpfile.js",
-    "build": "./node_modules/.bin/babel limelight.js -d lib",
+    "test": "eslint limelight.js",
+    "fix": "eslint limelight.js --fix",
+    "build": "babel limelight.js -d lib",
+    "minify": "uglifyjs lib/limelight.js -o lib/limelight.min.js",
     "release": "gulp release"
   },
-  "version": "2.2.4"
+  "version": "3.0.0",
+  "dependencies": {
+    "uglify-js": "^3.4.9"
+  }
 }

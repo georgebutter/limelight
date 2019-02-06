@@ -1,381 +1,210 @@
-/*
-  Manages visibility for popups, drawers, modals, notifications, tabs, accordions and anything else.
-*/
-const Limelight = function LimelightVisibilityManager (target, config) {
-  const settings = config || {} // The default configuration
-
-  /*
-    visibleClass: The class that will be applied to the target element.
-    bodyClass: The class that will be applied to the body.
-    triggerClass: The class that will be applied to the trigger that is clicked on.
-    detach: if the body should be appended to the body.
-    outerSelector: The outer area of the element, acts like a close button when clicked.
-    autoFocusSelector: An input field that you would like to be focused with the element opens.
-    slide: Whether the opening should be animated with javascript, useful for accordions.
-    slideSpeed: Speed of the animation, can be defined in px per ms.
-    slideChild: Selector of the child element to slide instead of the parent.
-    visible: Whether the element was loaded visible or not.
-    success: Callback for when an element is success fully made visible.
-    error: Callback fro when an element could not be made visible.
-  */
-
-  const defaultSettings = {
-    visibleClass: 'visible',
-    bodyClass: null,
-    triggerClass: null,
-    detach: null,
-    outerSelector: '.popup-outer',
-    autoFocusSelector: '[data-auto-focus]',
-    slide: null,
-    click: true,
-    slideSpeed: 10,
-    slideChild: null,
-    visible: false,
-    beforeShowCallback: null,
-    beforeHideCallback: null,
-    showCallback: null,
-    hideCallback: null,
-    error: null,
-    group: null
-  }
-  // Merge configs
-  this.settings = Object.assign(defaultSettings, settings) // Update current popup config
-
-  this.visible = this.settings.visible
-
-  // The Dom element of the popup
-  this.element = document.querySelector(target)
-
-  if (!this.element) {
-    return console.error(`${target} target not found!`)
+export default class Limelight {
+  constructor (config) {
+    Limelight.elements = Limelight.elements || {}
+    const set = config || {}
+    const defaults = {
+      visibleClass: 'visible',
+      bodyClass: null,
+      triggerClass: null,
+      outerSelector: '.popup-outer',
+      closeSelector: '[data-close]',
+      autoFocusSelector: '[data-auto-focus]',
+      slide: null,
+      click: true,
+      slideChild: null,
+      visible: false,
+      beforeShowCallback: null,
+      beforeHideCallback: null,
+      showCallback: null,
+      hideCallback: null,
+      error: null,
+      target: null
+    }
+    this.settings = Object.assign(defaults, set)
+    if (!this.settings.target) return console.error(`Limelight: no target was provided`)
+    this.visible = this.settings.visible
+    this.target = this.settings.target
+    this.element = document.querySelector(this.target)
+    const { element, settings } = this
+    const {
+      slide,
+      slideChild,
+      outerSelector,
+      hideCallback,
+      showCallback,
+      beforeHideCallback,
+      beforeShowCallback } = settings
+    if (!element) return console.error(`${this.target} target not found!`)
+    this.outer = element.querySelector(outerSelector)
+    if (slide) {
+      this.slideElem = slideChild ? element.querySelector(slideChild) : element
+    }
+    this.hasBeforeShowCallback = beforeShowCallback && typeof beforeShowCallback === 'function'
+    this.hasBeforeHideCallback = beforeHideCallback && typeof beforeHideCallback === 'function'
+    this.hasShowCallback = showCallback && typeof showCallback === 'function'
+    this.hasHideCallback = hideCallback && typeof hideCallback === 'function'
+    Limelight.elements[this.target] = this
+    this.init()
   }
 
-  this.outerElement = this.element.querySelector(this.settings.outerSelector)
-  this.target = target
+  escEvent (event) {
+    if (event.keyCode === 27) {
+      this.element.removeEventListener('keyup', this.escEvent)
+      this.hide()
+    }
+  }
 
-  if (this.settings.slide) {
-    if (this.settings.slideChild) {
-      this.slideElement = this.element.querySelector(this.settings.slideChild)
-    } else {
-      this.slideElement = this.element
+  eventHandler (event, method) {
+    event.preventDefault()
+    const { target } = event.elem.dataset
+    const element = Limelight.elements[target] || new Limelight({ target })
+    return method ? element[method]() : element['toggle']()
+  }
+
+  init () {
+    const { settings, element } = this
+    function on (top, eventName, selector, fn) {
+      top.addEventListener(eventName, (event) => {
+        const possibleTargets = top.querySelectorAll(selector)
+        const target = event.target
+        for (let i = 0, l = possibleTargets.length; i < l; i++) {
+          let el = target
+          const p = possibleTargets[i]
+
+          while (el && el !== top) {
+            if (el === p) {
+              event.preventDefault()
+              event.elem = p
+              return fn.call(p, event)
+            }
+            el = el.parentNode
+          }
+        }
+      }, true)
     }
 
-    const defaultDisplay = this.slideElement.style.display
-    this.slideElement.style.display = 'block'
-    this.maxHeight = this.slideElement.offsetHeight
-    this.slideElement.style.display = defaultDisplay
-    this.height = this.slideElement.offsetHeight
-    this.counter = this.height
+    const trigger = `[data-trigger][data-target="${this.target}"]`
+    if (settings.click) {
+      on(document.body, 'click', trigger, (e) => this.eventHandler(e))
+    }
+    if (settings.hover) {
+      on(document.body, 'mouseenter', trigger, (e) => this.eventHandler(e, 'show'))
+    }
+    on(element, 'click', settings.closeSelector, (e) => this.closeEvent(e))
+    if (settings.slide) {
+      window.addEventListener('resize', this.adjustSlideHeight)
+    }
   }
 
-  // Bind this into all of our prototype functions
-  this.show = this.show.bind(this)
-  this.hide = this.hide.bind(this)
-  this.toggle = this.toggle.bind(this)
-  this.detach = this.detach.bind(this)
-  this.slideDown = this.slideDown.bind(this)
-  this.slideUp = this.slideUp.bind(this)
-  this.buildEventListeners = this.buildEventListeners.bind(this)
-  this.eventHandler = this.eventHandler.bind(this) // If detach is set to true move the popup to the end of the popup
-
-  if (this.settings.detach) {
-    document.addEventListener('DOMContentLoaded', this.detach)
-  } // Create a list of all of the currently active elements so that we can access them globally
-
-  Limelight.elements[target] = this
-  window.Limelight = Limelight || {}
-  window.Limelight.elements[target] = this
-  this.buildEventListeners()
-} // Create an empty object to store all of the elements in.
-
-Limelight.elements = Limelight.elements || {} // Prevent default if the element is a link and return the selector of the popup element
-
-Limelight.getTarget = function getTheLimelightElementRelatedToTheTarget (event) {
-  const element = event.elem || event.currentTarget
-
-  if (element.tagName === 'A') {
-    event.preventDefault()
+  closeEvent (event) {
+    const target = this.getTarget(event)
+    target ? this.eventHandler(event, target, 'hide') : this.hide()
   }
 
-  const selector = element.dataset.target
-  const target = selector || null
-  return target
-}
+  getTarget (event) {
+    const element = event.elem || event.currentTarget
 
-/*
-  If the element does not exist then it is being fired directly from a data attribute.
-  Therefore we create a new Limelight element. Then we toggle the elements visibility.
-*/
+    if (element.tagName === 'A') {
+      event.preventDefault()
+      console.warn(`Limelight: It is not recommended to use links as trigger for accessibility reasons.`)
+    }
 
-Limelight.prototype.eventHandler = function hideOrShowTheElement (event, target, method) {
-  let element = Limelight.elements[target]
-
-  if (!element) {
-    element = new Limelight(target)
+    const selector = element.dataset.target
+    const target = selector || null
+    return target
   }
 
-  if (method === 'hide') {
-    return element.hide()
-  }
-
-  if (method === 'show') {
-    return element.show()
-  }
-
-  return element.toggle()
-}
-
-/*
-  When clicking on a close button or out element
-*/
-
-Limelight.closeEvent = function handleAnElementBeingClosed (event) {
-  const target = Limelight.getTarget(event)
-  // Check if the close trigger has a data-target if it does close the target
-  // If it doesn't close this element
-  if (target) {
-    this.eventHandler(event, target, 'hide')
-  } else {
-    this.hide()
-  }
-}
-
-/*
-  On key up event check if the user has pressed escape
-*/
-
-Limelight.escEvent = function onKeyUpEscape (event) {
-  if (event.keyCode === 27) {
-    this.element.removeEventListener('keyup', Limelight.escEvent)
-    this.hide()
-  }
-}
-
-/*
-  Build the event listeners
-*/
-
-Limelight.prototype.buildEventListeners = function bindLimelightEventListeners () {
-  function on (top, eventName, selector, fn) {
-    top.addEventListener(eventName, (event) => {
-      const possibleTargets = top.querySelectorAll(selector)
-      const target = event.target
-      for (let i = 0, l = possibleTargets.length; i < l; i++) {
-        let el = target
-        const p = possibleTargets[i]
-
-        while (el && el !== top) {
-          if (el === p) {
-            event.preventDefault()
-            event.elem = p
-            return fn.call(p, event)
-          }
-          el = el.parentNode
+  toggleTriggers (method) {
+    const { settings, target } = this
+    if (settings.triggerClass) {
+      const triggerSelector = `[data-trigger][data-target="${target}"]`
+      const triggerElements = document.querySelectorAll(triggerSelector)
+      for (let elem = 0; elem < triggerElements.length; elem += 1) {
+        const tElem = triggerElements[elem]
+        if (method === 'on') {
+          tElem.classList.add(settings.triggerClass)
+        } else {
+          tElem.classList.remove(settings.triggerClass)
         }
       }
-    }, true)
+    }
   }
 
-  const clickFunction = function (event) {
-    event.preventDefault()
-    event.stopPropagation()
-    this.triggerElement = event.elem
-    const target = this.triggerElement.dataset.target
-    this.eventHandler(event, target)
-  }.bind(this)
-
-  const hoverFunction = function (event) {
-    event.preventDefault()
-    event.stopPropagation()
-    const target = event.elem.dataset.target
-    this.eventHandler(event, target, 'show')
-  }.bind(this)
-
-  if (this.settings.click) {
-    on(document.body, 'click', `[data-trigger][data-target="${this.target}"]`, clickFunction)
+  isVisible () {
+    const { element, visible, settings } = this
+    return visible || element.classList.contains(settings.visibleClass)
   }
 
-  if (this.settings.hover) {
-    on(document.body, 'mouseenter', `[data-trigger][data-target="${this.target}"]`, hoverFunction)
+  show () {
+    const { settings, target, element, outer } = this
+    const { bodyClass, visibleClass } = settings
+    if (this.isVisible()) {
+      return this
+    }
+    if (this.hasBeforeShowCallback) {
+      settings.beforeShowCallback(this, Limelight.elements)
+    }
+    this.visible = true
+    if (bodyClass) document.body.classList.add(bodyClass)
+    element.classList.add(visibleClass)
+    this.slideToggle('down')
+    this.toggleTriggers('on')
+    const autoFocus = document.querySelector(`${target} ${settings.autoFocusSelector}`)
+    if (autoFocus) {
+      autoFocus.focus()
+    }
+    if (outer) {
+      outer.addEventListener('click', (e) => this.closeEvent(e))
+    }
+    element.addEventListener('keyup', (e) => this.escEvent(e))
+    if (this.hasShowCallBack) {
+      settings.showCallback(this)
+    }
+    return this
   }
-  on(this.element, 'click', '[data-close]', Limelight.closeEvent.bind(this))
 
-  if (this.settings.slide) {
-    window.addEventListener('resize', () => this.adjustSlideHeight())
-  }
-}
-
-/*
-  Add a class to a given element
-*/
-
-Limelight.addClass = function addAClassToAGivenElement (element, className) {
-  const el = element
-
-  if (el.classList) {
-    el.classList.add(className)
-  }
-}
-
-/*
-  Remove a class from a given element
-*/
-
-Limelight.removeClass = function removeAClassFromAGivenElement (element, className) {
-  const el = element
-
-  if (el.classList) {
-    el.classList.remove(className)
-  }
-}
-
-/*
-  Show the popup element
-*/
-
-Limelight.prototype.show = function showTheElement () {
-  // Check if the element is visible or not.
-  if (!this.visible || !this.element.classList.contains(this.settings.visibleClass)) {
-    // Fire the before show callback
-    if (this.settings.beforeShowCallback && typeof this.settings.beforeShowCallback === 'function') {
-      this.settings.beforeShowCallback(this, Limelight.elements)
-    } // Add the class to the trigger button if one is defined.
-
-    if (this.settings.triggerClass) {
-      const triggerElements = document.querySelectorAll(`[data-trigger][data-target="${this.target}"]`)
-      for (let elem = 0; elem < triggerElements.length; elem += 1) {
-        const element = triggerElements[elem]
-        Limelight.addClass(element, this.settings.triggerClass)
+  slideToggle (method) {
+    const { settings, slideElem } = this
+    if (settings.slide) {
+      const el = slideElem
+      if (method === 'up') {
+        el.style.height = settings.visible ? 0 : null
+      } else {
+        el.style.height = settings.visible ? null : `${el.scrollHeight}px`
       }
-    } // If slide is set to true slide the element down.
-
-    if (this.settings.slide) {
-      this.slideDown(this.settings.slideDuration)
-    } // Add the visible class to the popup
-
-    Limelight.addClass(this.element, this.settings.visibleClass) // Add the body class to the body
-
-    if (this.settings.bodyClass) {
-      Limelight.addClass(document.body, this.settings.bodyClass)
-    } // Define that this element is visible
-
-    this.visible = true // Focus on an input field once the modal has opened
-    const focusEl = document.querySelector(`${this.target} ${this.settings.autoFocusSelector}`)
-
-    if (focusEl) {
-      setTimeout(() => {
-        focusEl.focus()
-      }, 300)
     }
-
-    if (this.outerElement) {
-      // When someone clicks on the inner class hide the popup
-      this.outerElement.addEventListener('click', Limelight.closeEvent.bind(this))
-    } // When someone presses esc hide the popup and unbind the event listener
-
-    this.element.addEventListener('keyup', Limelight.escEvent.bind(this)) // Fire the success callback
-
-    if (this.settings.showCallback && typeof this.settings.showCallback === 'function') {
-      this.settings.showCallback(this, Limelight.elements)
-    }
-  } else if (this.settings.error && typeof this.settings.error === 'function') {
-    this.settings.error('Limelight: Error this element is already visible', this)
-  } // Return this so that we can chain functions together
-
-  return this
-}
-
-Limelight.prototype.slideDown = function slideDown () {
-  const el = this.slideElement
-
-  if (this.settings.visible) {
-    el.style.height = null
-  } else {
-    const height = `${el.scrollHeight}px`
-    el.style.height = height
   }
-}
 
-Limelight.prototype.adjustSlideHeight = function adjustSlideHeight () {
-  if (!this.visible) return
-  const el = this.slideElement
-  const height = `${el.scrollHeight}px`
-  el.style.height = height
-}
-
-Limelight.prototype.slideUp = function slideUp () {
-  const el = this.slideElement
-
-  if (this.settings.visible) {
-    el.style.height = 0
-  } else {
-    el.style.height = null
+  adjustSlideHeight () {
+    if (!this.isVisible()) return
+    const el = this.slideElement
+    el.style.height = `${el.scrollHeight}px`
   }
-}
 
-Limelight.prototype.hide = function hideTheElement () {
-  if (this.visible || this.element.classList.contains(this.settings.visibleClass)) {
-    // Fire the before hide callback
-    if (this.settings.beforeHideCallback && typeof this.settings.beforeHideCallback === 'function') {
-      this.settings.beforeHideCallback(this, Limelight.elements)
+  hide () {
+    const { settings, element, outer } = this
+    if (!this.isVisible()) {
+      return this
     }
-
+    if (this.hasBeforeHideCallback) {
+      settings.beforeHideCallback(this)
+    }
     this.visible = false
-
-    if (this.settings.bodyClass) {
-      Limelight.removeClass(document.body, this.settings.bodyClass)
+    if (settings.bodyClass) {
+      document.body.classList.remove(settings.bodyClass)
     }
-
-    Limelight.removeClass(this.element, this.settings.visibleClass)
-
-    if (this.settings.slide) {
-      this.slideUp(this.settings.slideDuration)
+    element.classList.remove(settings.visibleClass)
+    this.slideToggle('up')
+    this.toggleTriggers('off')
+    if (outer) this.outer.removeEventListener('click', (e) => this.closeEvent(e))
+    if (this.hasHideCallback) {
+      settings.hideCallback(this)
     }
-
-    if (this.settings.triggerClass) {
-      const triggerElements = document.querySelectorAll(`[data-trigger][data-target="${this.target}"]`)
-      for (let elem = 0; elem < triggerElements.length; elem += 1) {
-        const element = triggerElements[elem]
-        Limelight.removeClass(element, this.settings.triggerClass)
-      }
-    } // If slide is set to true slide the element down.
-
-    if (this.outerElement) {
-      // When someone clicks on the inner class hide the popup
-      this.outerElement.removeEventListener('click', Limelight.closeEvent.bind(this))
-    } // Fire the success callback
-
-    if (this.settings.hideCallback && typeof this.settings.hideCallback === 'function') {
-      this.settings.hideCallback(this, Limelight.elements)
-    }
-  } else if (this.settings.error && typeof this.settings.error === 'function') {
-    this.settings.error('Limelight: Error this element is already hidden', this)
+    return this
   }
 
-  return this
-}
-
-/*
-  Show if hidden, hide if shown.
-*/
-
-Limelight.prototype.toggle = function toggleLimelightVisibility () {
-  if (this.visible) {
-    this.hide()
-  } else {
-    this.show()
+  toggle () {
+    this.isVisible() ? this.hide() : this.show()
+    return this
   }
-
-  return this
 }
-
-/*
-  Move the element to the end of the body, sometime useful for popups.
-*/
-
-Limelight.prototype.detach = function moveTheElementToTheEndOfTheBody () {
-  document.body.appendChild(this.element)
-  return this
-}
-
-export default Limelight
