@@ -92,7 +92,7 @@ export default class Limelight {
     }
     on(element, 'click', settings.closeSelector, (e) => this.closeEvent(e))
     if (settings.slide) {
-      window.addEventListener('resize', this.adjustSlideHeight)
+      window.addEventListener('resize', this.adjustSlideHeight.bind(this))
     }
   }
 
@@ -177,7 +177,8 @@ export default class Limelight {
 
   adjustSlideHeight () {
     if (!this.isVisible()) return
-    const el = this.slideElement
+    if (!this.settings.visible) return
+    const el = this.slideElem
     el.style.height = `${el.scrollHeight}px`
   }
 
