@@ -36,10 +36,9 @@
     "test": "eslint limelight.js",
     "fix": "eslint limelight.js --fix",
     "build": "babel limelight.js -d lib",
-    "minify": "uglifyjs lib/limelight.js -o lib/limelight.min.js",
-    "release": "gulp release"
+    "minify": "uglifyjs lib/limelight.js -o lib/limelight.min.js"
   },
-  "version": "3.0.0",
+  "version": "3.0.2",
   "dependencies": {
     "uglify-js": "^3.4.9"
   }
